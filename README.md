@@ -1,4 +1,4 @@
-"## Welcome to **The Guau! Project**
+## Welcome to **The Guau! Project**
 
 ### About this Project 🐾
 
@@ -85,4 +85,4 @@ I utilized an array of tools to bring this project to life, including:
 passion for creativity and love for dogs like Dante, along with the cherished
 memories of Suki, Mercurio, and Kero. It’s a glimpse into how thoughtful
 branding can create unforgettable experiences for furry friends and their
-humans. "
+humans.
