@@ -1,0 +1,9 @@
+{
+	"window.title": "Guau 🐶 (2024)",
+	"proyect.name": "Guau - Pawesome Owners 🐶",
+	"proyect.icon": "../favicon.ico",
+	"files.exclude": {
+		"**/desktop.ini": true
+	},
+
+}

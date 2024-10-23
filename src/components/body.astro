@@ -1,0 +1,136 @@
+---
+import { marked } from "marked";
+import data from "../local_data.json";
+import Layout from "./Layout.astro";
+import Image from "./Image.astro";
+
+import Intro from "./Intro.astro";
+interface Props {
+	lang?: string;
+}
+const { lang = "en" } = Astro.props;
+interface Pages {
+	celcius: any;
+	[key: string]: any;
+}
+const pages: Pages = data.pages?.[lang] || {};
+const categories = data.lines?.[lang] || {};
+const products = data.products?.[lang] || {};
+const texts = data.texts?.[lang] || {};
+
+const pageName: keyof Pages = (Astro.params?.page as string) || "home";
+const page = pages[pageName] || pages.guau;
+const projectName = "Guau";
+
+const htmlContent = marked(page.content);
+---
+
+<Layout
+	title={`${page.title} ${page.emoji} ${page.excerpt}`}
+	description={page.description}
+	lang={lang}>
+	<Intro />
+	<h1>{page.title}</h1>
+
+	<Image src="/./images/thumbnail.webp" />
+	{
+		Object.entries(categories).map(
+			([key, { id, title, emoji, excerpt, type, content }]) => (
+				<section
+					id={id}
+					aria-labelledby={`category-${id}`}
+					title={`${title} ${emoji} ${type}`}>
+					<h2 id={`category-${id}`}>
+						{title} {emoji}
+					</h2>
+					<p>{excerpt}</p>
+					<h3>{type}</h3>
+					<p set:html={content} />
+					<Image
+						src={`/images/categories/${id}.webp`}
+						alt={`${title}`}
+					/>
+					<ul>
+						{Object.entries(products)
+							.filter(
+								([key, product]) => product.category === title,
+							)
+							.map(([key, product]) => (
+								<li
+									id={`${id}-${product.id}`}
+									style={{
+										backgroundColor: `rgb(${product.color})`,
+										color: `rgb(${product.text})`,
+									}}>
+									<h3>
+										{product.title} {product.emoji}
+									</h3>
+									<h4>{product.flavor}</h4>
+									<p set:html={product.content} />
+									<Image
+										src={`/images/products/${product.id}.webp`}
+										alt={`${product.title}`}
+									/>
+								</li>
+							))}
+					</ul>
+				</section>
+			),
+		)
+	}
+
+	<div set:html={htmlContent} />
+</Layout>
+<style global>
+	figure,
+	picture {
+		padding: unset;
+		margin: unset;
+		margin-block-start: unset;
+		margin-block-end: unset;
+		margin-inline-start: unset;
+		margin-inline-end: unset;
+		display: unset;
+		unicode-bidi: unset;
+	}
+
+	.intro {
+		width: 100vw;
+		height: 100vh;
+		overflow: auto;
+		.grid {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			align-content: center;
+			flex-direction: row;
+			.line {
+				display: flex;
+				padding: 0;
+				margin: 0;
+				width: calc((100vw / 4) * 6);
+				.item {
+					display: flex;
+					margin: 0;
+					width: calc(100vw / 4);
+					height: calc(100vh / 3);
+					overflow: hidden;
+					padding: 0;
+					margin: 0;
+					img {
+						width: 100%;
+						height: 100%;
+						transition: all 0.5s ease-in-out;
+						object-fit: cover;
+						object-position: center;
+						scale: 1;
+					}
+					&:hover img {
+						scale: 1.2;
+					}
+				}
+			}
+		}
+	}
+</style>

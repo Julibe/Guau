@@ -1,0 +1,94 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	creator?: string;
+	lang?: string;
+}
+const {
+	title,
+	description = title,
+	image = "/./images/thumbnail.webp",
+	creator = "@julibe",
+	lang = "en",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+
+		<title>{title}</title>
+		<link rel="icon" type="image/webp" href="/./images/favicon.webp" />
+		<link
+			rel="sitemap"
+			type="application/xml"
+			title="Sitemap"
+			href="/./sitemap.xml"
+		/>
+
+		<meta name="description" content={description} />
+		<meta name="keywords" content="your, keywords, here" />
+		<!-- Add relevant keywords -->
+		<meta name="robots" content="index, follow" />
+		<!-- Allow search engines to index the page -->
+
+		<meta property="og:title" content={title} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.site} />
+		<meta property="og:image" content={image} />
+		<meta property="og:image:alt" content={description} />
+		<meta property="og:image:type" content="image/webp" />
+		<meta property="og:description" content={description} />
+		<meta property="og:site_name" content="Your Site Name" />
+		<!-- Add your site name -->
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:creator" content={creator} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={image} />
+		<meta name="twitter:image:alt" content={description} />
+
+		<link rel="canonical" href={Astro.site} />
+		<!-- Add canonical URL for SEO -->
+
+		<!-- Google Analitics -->
+		<script
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=G-Z68YW5JC63"
+		></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag("js", new Date());
+			gtag("config", "G-Z68YW5JC63");
+		</script>
+
+		<!-- Google Tag Manager -->
+		<script>
+			(function (w, d, s, l, i) {
+				w[l] = w[l] || [];
+				w[l].push({
+					"gtm.start": new Date().getTime(),
+					event: "gtm.js",
+				});
+				var f = d.getElementsByTagName(s)[0],
+					j = d.createElement(s),
+					dl = l != "dataLayer" ? "&l=" + l : "";
+				j.async = true;
+				j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+				f.parentNode.insertBefore(j, f);
+			})(window, document, "script", "dataLayer", "GTM-W23DBDBV");
+		</script>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

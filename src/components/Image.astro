@@ -1,0 +1,91 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+	src: string;
+	link?: string;
+	target?: string;
+	alt?: string;
+	width?: number;
+	height?: number;
+	class?: string;
+	style?: string;
+	sources?: {
+		media: string;
+		srcset: string;
+	}[];
+}
+
+const size = 512;
+
+const {
+	link = false,
+	target = "_self",
+	src = "/./images/thumbnail.webp",
+	alt = "Image",
+	class: className = "image",
+	width = size,
+	height = (size / 16) * 9,
+	sources = [],
+	style = "height:auto;",
+} = Astro.props;
+
+const imageExists = async (src: string): Promise<boolean> => {
+	try {
+		const { src: resolvedSrc } = await Image(src, { resolve: true });
+		const response = await fetch(resolvedSrc, { method: "HEAD" });
+		return response.ok;
+	} catch (error) {
+		return false;
+	}
+};
+---
+
+{
+	imageExists(src) ?
+		<figure class="image-figure">
+			{link ?
+				<a
+					href={link}
+					aria-label={alt}
+					title={alt}
+					target={target}
+					class="image-link">
+					<picture class="image-picture">
+						{sources.map(({ media, srcset }) => (
+							<source
+								media={`(min-width: ${media})`}
+								srcset={srcset}
+							/>
+						))}
+						<Image
+							src={src}
+							alt={alt}
+							width={width}
+							height={height}
+							class={className}
+							style={style}
+						/>
+					</picture>
+				</a>
+			:	<picture class="image-picture">
+					{sources.map(({ media, srcset }) => (
+						<source
+							media={`(min-width: ${media})`}
+							srcset={srcset}
+						/>
+					))}
+					<Image
+						src={src}
+						alt={alt}
+						title={alt}
+						width={width}
+						height={height}
+						class={className}
+						style={style}
+					/>
+				</picture>
+			}
+		</figure>
+	:	null
+}
