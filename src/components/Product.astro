@@ -1,0 +1,40 @@
+---
+import Image from "./Image.astro";
+interface Props {
+	product: {
+		id: string;
+		color: string;
+		text: string;
+		title: string;
+		emoji: string;
+		flavor: string;
+		content: string;
+	};
+	parent: string;
+}
+
+const { product, parent } = Astro.props;
+const { id, color, text, title, emoji, flavor, content } = product;
+---
+
+<div
+	id={`${parent}-${id}`}
+	style={{
+		backgroundColor: `rgb(${color})`,
+		color: `rgb(${text})`,
+	}}
+	class="relative p-4 rounded-lg shadow-md transition-transform duration-300 transform hover:scale-105"
+	aria-labelledby={`title-${id}`}
+	aria-describedby={`content-${id}`}>
+	<h3 id={`title-${id}`} class="text-xl font-bold mb-1">
+		{title}
+		{emoji}
+	</h3>
+	<h4 class="text-lg italic mb-2">{flavor}</h4>
+	<p id={`content-${id}`} set:html={content} class="my-2 text-base" />
+	<Image
+		src={`/images/products/${id}.webp`}
+		alt={title}
+		class="w-full h-auto rounded-lg mt-2"
+	/>
+</div>

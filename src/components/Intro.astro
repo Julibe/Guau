@@ -1,10 +1,29 @@
 ---
 import fs from "node:fs";
+import Image from "./Image.astro";
+
+export interface Props {
+	title?: string;
+	excerpt?: string;
+	emoji?: string;
+	more?: string;
+	color?: string;
+	text?: string;
+}
+const {
+	title = "Guau",
+	excerpt = "Pawesome Owners",
+	emoji = "🐶",
+	more = "View",
+	color = "0, 0, 0",
+	text = "255, 255, 255",
+} = Astro.props;
 
 const baseImages = fs
 	.readdirSync("public/images/dogs")
 	.sort(() => Math.random() - 0.5);
 const images = [...baseImages, ...baseImages, ...baseImages];
+
 const rows = 5;
 const line = 6;
 let length = Math.floor(images.length / line) * line;
@@ -13,13 +32,29 @@ if (length > line * rows) {
 }
 ---
 
-<section class="intro">
+<section id="intro">
+	<div class="cover" style=`--color: ${color}; --text: ${text};`>
+		<img
+			src={`/images/logo.webp`}
+			class="logo"
+			alt={`${title}  ${emoji} ${excerpt}`}
+			title={`${title}  ${emoji} ${excerpt}`}
+		/>
+		<a
+			aria-label={more}
+			class="more-button"
+			href="#intro"
+			title={more}
+			rel="prefetch">
+			{more}
+		</a>
+	</div>
 	<div class="grid">
 		{
 			Array.from({
 				length: Math.ceil(length / line),
 			}).map((_, lineIndex) => (
-				<ul class="line" id={`line-${lineIndex}`}>
+				<div class="line" id={`line-${lineIndex}`}>
 					{images
 						.slice(lineIndex * line, lineIndex * line + line)
 						.map((image, i) => {
@@ -35,19 +70,111 @@ if (length > line * rows) {
 								.join(" ");
 
 							return (
-								<li
+								<div
 									class="item"
 									title={image_name}
 									id={`item-${lineIndex * line + i}`}>
-									<img
-										src={`/images/dogs/${image}`}
-										alt={image_name}
-									/>
-								</li>
+									<img src={`/images/dogs/${image}`} />
+								</div>
 							);
 						})}
-				</ul>
+				</div>
 			))
 		}
 	</div>
 </section>
+<style>
+	#intro {
+		@apply w-full h-screen overflow-hidden relative bg-black z-10;
+	}
+	.cover {
+		@apply absolute  w-full  h-screen z-20;
+
+		background: radial-gradient(
+			circle,
+			rgba(var(--color), 0.75) 10%,
+			rgba(var(--color), 0) 75%
+		);
+	}
+	.logo {
+		@apply m-0 absolute top-1/2 left-1/2  w-1/3 h-auto bg-transparent;
+		transform: translate(-50%, -50%);
+	}
+	.more-button {
+		@apply m-0 absolute top-3/4 left-1/2 font-extralight text-center  border-solid border-2 px-8 py-4 text-lg rounded-full;
+		text-decoration: none;
+		transform: translate(-50%, -50%);
+		color: rgba(var(--text), 1);
+		border-color: rgba(var(--text), 1);
+		background-color: rgba(var(--color), 0.5);
+	}
+	.grid {
+		@apply flex flex-wrap justify-center items-center content-center flex-row origin-center absolute top-[-25vh] left-[-25vw] gap-2.5;
+		rotate: -15deg;
+	}
+	.line {
+		@apply flex p-0 m-0 w-[calc(100vw/4*6)] gap-2.5;
+	}
+	.item {
+		@apply flex m-0 w-[calc(100vw/4)] h-[calc(100vw/4)] overflow-hidden p-0;
+	}
+	img {
+		@apply w-full h-full transition-all duration-1000 ease-in-out object-cover object-center;
+		scale: 1;
+	}
+	.item:hover img {
+		scale: 1.1;
+	}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer
+></script>
+<script>
+	window.addEventListener("load", () => {
+		const _intro = document.querySelector("#intro");
+		const _lines = _intro.querySelectorAll(".line");
+		const lines = _lines.length;
+		console.log("lines: " + lines);
+
+		let ini_pos = 0;
+		if (_intro) {
+			_intro.addEventListener("mousemove", (e) => {
+				let box = _intro.getBoundingClientRect();
+				let bod = document.body.getBoundingClientRect();
+				let w = box.width;
+				let h = box.height;
+				let m_x = e.clientX - box.left;
+				let m_y = e.clientY - box.top;
+				let per_x = Math.round((m_y / h) * 200) - 100;
+				let per_y = Math.round((m_x / w) * 200) - 100;
+
+				console.clear();
+				console.log("per_x: " + per_x + " per_y: " + per_y);
+				let speed = 0.97;
+				if (lines > 0) {
+					let dis = 1 / (lines - 1);
+					let start = -(lines - 1) / 2;
+
+					_lines.forEach((line, l) => {
+						let mult = dis * (start + l);
+						if (mult == 0) {
+							mult = dis * (start + (l + 0.5));
+						}
+						let pos = ((per_x + per_y) / 2) * mult * speed;
+						gsap.to(line, {
+							marginLeft: pos + "%",
+							duration: 3,
+							ease: "back.out",
+						});
+
+						gsap.to(line, {
+							transform:
+								"skew(" + (ini_pos - pos) * 0.5 + "deg, 0)",
+							duration: 6,
+							ease: "circ.out",
+						});
+					});
+				}
+			});
+		}
+	});
+</script>

@@ -1,0 +1,154 @@
+<style>
+	@tailwind base;
+	@tailwind components;
+	@tailwind utilities;
+
+	:global(html, body) {
+		--text: 255, 255, 255;
+		--color: 0, 0, 0;
+		@apply p-0 m-0 w-full;
+		color: rgb(var(--text));
+		background-color: rgb(var(--color));
+	}
+
+	:global(figure, picture) {
+		@apply p-0 m-0 mb-0 mt-0;
+	}
+
+	:global(*::selection) {
+		color: rgb(var(--text));
+		background-color: rgb(var(--text));
+	}
+
+	:global(
+			:is(
+					h1,
+					h2,
+					h3,
+					h4,
+					h5,
+					h6,
+					p,
+					hr,
+					ol,
+					ul,
+					blockquote,
+					figure,
+					table,
+					pre,
+					img,
+					dl
+				)
+		) {
+		@apply pb-4;
+	}
+
+	:global(:is(h1, h2, h3, h4, h5, h6)) {
+		@apply font-bold uppercase;
+		font-family: "Bebas Neue";
+	}
+
+	:global(.info h1) {
+		@apply text-6xl;
+	}
+
+	:global(.info h2) {
+		@apply text-5xl;
+	}
+
+	:global(.info h3) {
+		@apply text-4xl;
+	}
+
+	:global(.info h4) {
+		@apply text-3xl;
+	}
+
+	:global(.info h5) {
+		@apply text-2xl;
+	}
+
+	:global(.info h6) {
+		@apply text-xl;
+	}
+
+	:global(.info p) {
+		@apply font-light text-xl leading-relaxed;
+	}
+
+	:global(.info hr) {
+		@apply my-8 border-t-2 border-t-white;
+	}
+
+	:global(.info a) {
+		@apply underline;
+	}
+
+	:global(.info ul, ol) {
+		@apply ml-6;
+	}
+
+	:global(.info li) {
+		@apply mb-2;
+	}
+
+	:global(.info blockquote) {
+		@apply pl-4 border-l-4 italic my-4;
+	}
+
+	:global(.info code) {
+		@apply rounded px-2 py-1 font-mono text-sm;
+	}
+
+	:global(.info pre) {
+		@apply p-4 rounded-lg overflow-x-auto my-4;
+	}
+
+	:global(.info figure) {
+		@apply my-4;
+	}
+
+	:global(.info figcaption) {
+		@apply text-sm italic mt-2;
+	}
+
+	:global(.info table) {
+		@apply w-full border-collapse my-4;
+	}
+
+	:global(.info th, td) {
+		@apply border p-2;
+	}
+
+	:global(.info img, video) {
+		@apply w-full h-auto;
+	}
+
+	:global(.info iframe) {
+		@apply w-full;
+	}
+
+	:global(.info dl) {
+		@apply my-4;
+	}
+
+	:global(.info dt) {
+		@apply font-bold;
+	}
+
+	:global(.info dd) {
+		@apply ml-4;
+	}
+
+	@media (max-width: 640px) {
+		:global(.info h1) {
+			@apply text-3xl;
+		}
+		:global(.info h2) {
+			@apply text-2xl;
+		}
+		:global(.info h3) {
+			@apply text-xl;
+		}
+	}
+</style>
