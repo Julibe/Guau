@@ -1,154 +1,177 @@
-<style>
+<style is:global>
 	@tailwind base;
 	@tailwind components;
 	@tailwind utilities;
 
-	:global(html, body) {
+	@font-face {
+		font-family: "Pulsar";
+		src: url("/./fonts/pulsar.eot");
+		src:
+			url("/./fonts/pulsar.eot?#iefix") format("embedded-opentype"),
+			url("/./fonts/pulsar.woff2") format("woff2"),
+			url("/./fonts/pulsar.woff") format("woff"),
+			url("/./fonts/pulsar.ttf") format("truetype"),
+			url("/./fonts/pulsar.svg#pulsar") format("svg");
+		font-weight: normal;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	@font-face {
+		font-family: "Acumin";
+		src: url("/./fonts/acumin.eot");
+		src:
+			url("/./fonts/acumin.eot?#iefix") format("embedded-opentype"),
+			url("/./fonts/acumin.woff2") format("woff2"),
+			url("/./fonts/acumin.woff") format("woff"),
+			url("/./fonts/acumin.ttf") format("truetype"),
+			url("/./fonts/acumin.svg#acumin") format("svg");
+		font-weight: normal;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	html,
+	body {
 		--text: 255, 255, 255;
 		--color: 0, 0, 0;
 		@apply p-0 m-0 w-full;
+		font-family: "Acumin";
 		color: rgb(var(--text));
 		background-color: rgb(var(--color));
 	}
 
-	:global(figure, picture) {
+	figure,
+	picture {
 		@apply p-0 m-0 mb-0 mt-0;
 	}
 
-	:global(*::selection) {
+	*::selection {
 		color: rgb(var(--text));
 		background-color: rgb(var(--text));
 	}
 
-	:global(
-			:is(
-					h1,
-					h2,
-					h3,
-					h4,
-					h5,
-					h6,
-					p,
-					hr,
-					ol,
-					ul,
-					blockquote,
-					figure,
-					table,
-					pre,
-					img,
-					dl
-				)
-		) {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p,
+	hr,
+	ol,
+	ul,
+	blockquote,
+	table,
+	pre,
+	img,
+	dl {
 		@apply pb-4;
+		font-family: "Acumin";
+		font-weight: 100;
 	}
 
-	:global(:is(h1, h2, h3, h4, h5, h6)) {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
 		@apply font-bold uppercase;
-		font-family: "Bebas Neue";
+		font-family: "Pulsar";
+		font-weight: 100;
 	}
 
-	:global(.info h1) {
+	h1 {
+		@apply text-9xl;
+	}
+
+	h2 {
+		@apply text-8xl;
+	}
+
+	h3 {
+		@apply text-7xl;
+	}
+
+	h4 {
 		@apply text-6xl;
 	}
 
-	:global(.info h2) {
+	h5 {
 		@apply text-5xl;
 	}
 
-	:global(.info h3) {
+	h6 {
 		@apply text-4xl;
 	}
 
-	:global(.info h4) {
-		@apply text-3xl;
-	}
-
-	:global(.info h5) {
-		@apply text-2xl;
-	}
-
-	:global(.info h6) {
-		@apply text-xl;
-	}
-
-	:global(.info p) {
+	p {
 		@apply font-light text-xl leading-relaxed;
 	}
 
-	:global(.info hr) {
+	hr {
 		@apply my-8 border-t-2 border-t-white;
 	}
 
-	:global(.info a) {
+	a {
 		@apply underline;
 	}
 
-	:global(.info ul, ol) {
+	ul,
+	ol {
 		@apply ml-6;
 	}
 
-	:global(.info li) {
+	li {
 		@apply mb-2;
 	}
 
-	:global(.info blockquote) {
+	blockquote {
 		@apply pl-4 border-l-4 italic my-4;
 	}
 
-	:global(.info code) {
+	code {
 		@apply rounded px-2 py-1 font-mono text-sm;
 	}
 
-	:global(.info pre) {
+	pre {
 		@apply p-4 rounded-lg overflow-x-auto my-4;
 	}
 
-	:global(.info figure) {
-		@apply my-4;
-	}
-
-	:global(.info figcaption) {
+	figcaption {
 		@apply text-sm italic mt-2;
 	}
 
-	:global(.info table) {
+	table {
 		@apply w-full border-collapse my-4;
 	}
 
-	:global(.info th, td) {
+	th,
+	td {
 		@apply border p-2;
 	}
 
-	:global(.info img, video) {
-		@apply w-full h-auto;
+	img,
+	video {
+		@apply max-w-full h-auto;
 	}
 
-	:global(.info iframe) {
+	iframe {
 		@apply w-full;
 	}
 
-	:global(.info dl) {
+	dl {
 		@apply my-4;
 	}
 
-	:global(.info dt) {
+	dt {
 		@apply font-bold;
 	}
 
-	:global(.info dd) {
+	dd {
 		@apply ml-4;
 	}
 
-	@media (max-width: 640px) {
-		:global(.info h1) {
-			@apply text-3xl;
-		}
-		:global(.info h2) {
-			@apply text-2xl;
-		}
-		:global(.info h3) {
-			@apply text-xl;
-		}
-	}
+	@media;
 </style>

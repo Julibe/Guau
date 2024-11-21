@@ -40,50 +40,42 @@ const htmlContent = marked(page.content);
 		emoji={pages.home.emoji}
 		more={texts.view.text}
 		color={pages.home.color}
+		text={pages.home.text}
 	/>
-
-	{texts.view}
-
-	<ul class="list-disc pl-10">
+	<article class="hidden">
+		<h1>{page.title}</h1>
 		{
-			Object.entries(texts).map(([key, value]) => (
-				<li key={key}>{value.text}</li>
-			))
+			Object.entries(categories).map(
+				([key, { id, title, emoji, excerpt, type, content }]) => (
+					<section
+						id={id}
+						aria-labelledby={`category-${id}`}
+						title={`${title} ${emoji} ${type}`}>
+						<h2 id={`category-${id}`}>
+							{title} {emoji}
+						</h2>
+						<p>{excerpt}</p>
+						<h3>{type}</h3>
+						<p set:html={content} />
+						<Image
+							src={`/images/categories/${id}.webp`}
+							alt={`${title}`}
+						/>
+						<ul>
+							{Object.entries(products)
+								.filter(
+									([key, product]) =>
+										product.category === title,
+								)
+								.map(([key, product]) => (
+									<Product parent={key} product={product} />
+								))}
+						</ul>
+					</section>
+				),
+			)
 		}
-	</ul>
 
-	<h1 class="text-2xl font-bold">{page.title}</h1>
-
-	{
-		Object.entries(categories).map(
-			([key, { id, title, emoji, excerpt, type, content }]) => (
-				<section
-					id={id}
-					aria-labelledby={`category-${id}`}
-					title={`${title} ${emoji} ${type}`}>
-					<h2 id={`category-${id}`}>
-						{title} {emoji}
-					</h2>
-					<p>{excerpt}</p>
-					<h3>{type}</h3>
-					<p set:html={content} />
-					<Image
-						src={`/images/categories/${id}.webp`}
-						alt={`${title}`}
-					/>
-					<ul>
-						{Object.entries(products)
-							.filter(
-								([key, product]) => product.category === title,
-							)
-							.map(([key, product]) => (
-								<Product parent={key} product={product} />
-							))}
-					</ul>
-				</section>
-			),
-		)
-	}
-
-	<div set:html={htmlContent} />
+		<div set:html={htmlContent} />
+	</article>
 </Layout>
