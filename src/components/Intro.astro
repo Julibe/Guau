@@ -170,45 +170,51 @@ if (length > line * rows) {
 		});
 
 		let ini_pos = 0;
-		if (_intro) {
-			_intro.addEventListener("mousemove", (e) => {
-				let box = _intro.getBoundingClientRect();
-				let bod = document.body.getBoundingClientRect();
-				let w = box.width;
-				let h = box.height;
-				let m_x = e.clientX - box.left;
-				let m_y = e.clientY - box.top;
-				let per_x = Math.round((m_y / h) * 200) - 100;
-				let per_y = Math.round((m_x / w) * 200) - 100;
+                if (_intro) {
+                        let frame;
+                        _intro.addEventListener("mousemove", (e) => {
+                                const { clientX, clientY } = e;
+                                if (frame) cancelAnimationFrame(frame);
+                                frame = requestAnimationFrame(() => {
+                                        const box = _intro.getBoundingClientRect();
+                                        const w = box.width;
+                                        const h = box.height;
+                                        const m_x = clientX - box.left;
+                                        const m_y = clientY - box.top;
+                                        const per_x = Math.round((m_y / h) * 200) - 100;
+                                        const per_y = Math.round((m_x / w) * 200) - 100;
+                                        const speed = 0.97;
+                                        console.clear();
+                                        console.log(
+                                                `Mouse: x=${m_x}, y=${m_y}\nOffsets: horizontal=${per_y}%, vertical=${per_x}%`
+                                        );
+                                        if (lines > 0) {
+                                                const dis = 1 / (lines - 1);
+                                                const start = -(lines - 1) / 2;
 
-				console.clear();
-				console.log("per_x: " + per_x + " per_y: " + per_y);
-				let speed = 0.97;
-				if (lines > 0) {
-					let dis = 1 / (lines - 1);
-					let start = -(lines - 1) / 2;
+                                                _lines.forEach((line, l) => {
+                                                        let mult = dis * (start + l);
+                                                        if (mult == 0) {
+                                                                mult = dis * (start + (l + 0.5));
+                                                        }
+                                                        const pos = ((per_x + per_y) / 2) * mult * speed;
+                                                        gsap.to(line, {
+                                                                marginLeft: pos + "%",
+                                                                duration: 3,
+                                                                ease: "back.out",
+                                                        });
 
-					_lines.forEach((line, l) => {
-						let mult = dis * (start + l);
-						if (mult == 0) {
-							mult = dis * (start + (l + 0.5));
-						}
-						let pos = ((per_x + per_y) / 2) * mult * speed;
-						gsap.to(line, {
-							marginLeft: pos + "%",
-							duration: 3,
-							ease: "back.out",
-						});
-
-						gsap.to(line, {
-							transform:
-								"skew(" + (ini_pos - pos) * 0.5 + "deg, 0)",
-							duration: 6,
-							ease: "circ.out",
-						});
-					});
-				}
-			});
-		}
+                                                        gsap.to(line, {
+                                                                transform:
+                                                                        "skew(" + (ini_pos - pos) * 0.5 + "deg, 0)",
+                                                                duration: 6,
+                                                                ease: "circ.out",
+                                                        });
+                                                });
+                                        }
+                                        frame = null;
+                                });
+                        });
+                }
 	});
 </script>
