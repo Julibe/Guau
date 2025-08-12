@@ -42,9 +42,9 @@ const imageExists = async (src: string): Promise<boolean> => {
 ---
 
 {
-	imageExists(src) ?
-		<figure class="image-figure">
-			{link ?
+        (await imageExists(src)) ?
+                <figure class="image-figure">
+                        {link ?
 				<a
 					href={link}
 					aria-label={alt}
